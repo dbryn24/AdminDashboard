@@ -96,68 +96,75 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex bg-slate-50 text-slate-800">
-      {/* 1. Left Sidebar Component */}
+    <div className="h-screen w-full flex bg-slate-50 text-slate-800 overflow-hidden">
+      {/* 1. Left Sidebar Component - Stays fixed on the left */}
       <Sidebar
         activeItem={activeWorkspaceItem}
         onItemClick={(item: string) => setActiveWorkspaceItem(item)}
       />
 
-      {/* Main Container */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* 2. Top Header Navigation Bar Component */}
+      {/* Main Column - Full viewport height flex column */}
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden">
+        {/* 2. Top Header Navigation Bar Component - Stays fixed at the top */}
         <Topbar
           workspaceName="Workspace"
           currentPage={activeWorkspaceItem}
           onSearch={(query: string) => setSearchQuery(query)}
         />
 
-        {/* 3. Overview Page Header Component */}
-        <OverviewHeader
-          title="Business overview"
-          dateRange={dateRange}
-          onDateClick={() => setIsDateModalOpen(true)}
-          onAddTransactionClick={() => setIsAddModalOpen(true)}
-        />
+        {/* 3. Moving / Scrollable Area - ONLY this section scrolls */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 flex flex-col">
+          {/* Overview Page Header Component */}
+          <OverviewHeader
+            title="Business overview"
+            dateRange={dateRange}
+            onDateClick={() => setIsDateModalOpen(true)}
+            onAddTransactionClick={() => setIsAddModalOpen(true)}
+          />
 
-        {/* View Mode Switcher (Allows switching between full rich dashboard and exact wireframe canvas) */}
-        <div className="px-8 pt-4 pb-2 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <span className="font-medium text-slate-600">View mode:</span>
-            <div className="inline-flex rounded-lg bg-slate-200/70 p-0.5">
-              <button
-                type="button"
-                onClick={() => setCanvasViewMode("dashboard")}
-                className={`px-2.5 py-1 rounded-md font-medium text-xs transition-all cursor-pointer ${canvasViewMode === "dashboard"
-                  ? "bg-white text-slate-800 shadow-2xs font-semibold"
-                  : "text-slate-600 hover:text-slate-900"
+          {/* View Mode Switcher */}
+          <div className="px-8 pt-4 pb-2 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span className="font-medium text-slate-600">View mode:</span>
+              <div className="inline-flex rounded-lg bg-slate-200/70 p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setCanvasViewMode("dashboard")}
+                  className={`px-2.5 py-1 rounded-md font-medium text-xs transition-all cursor-pointer ${
+                    canvasViewMode === "dashboard"
+                      ? "bg-white text-slate-800 shadow-2xs font-semibold"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
-              >
-                Full Dashboard
-              </button>
-              <button
-                type="button"
-                onClick={() => setCanvasViewMode("blank")}
-                className={`px-2.5 py-1 rounded-md font-medium text-xs transition-all cursor-pointer ${canvasViewMode === "blank"
-                  ? "bg-white text-slate-800 shadow-2xs font-semibold"
-                  : "text-slate-600 hover:text-slate-900"
+                >
+                  Full Dashboard
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCanvasViewMode("blank")}
+                  className={`px-2.5 py-1 rounded-md font-medium text-xs transition-all cursor-pointer ${
+                    canvasViewMode === "blank"
+                      ? "bg-white text-slate-800 shadow-2xs font-semibold"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
-              >
-                Blank Canvas (Screenshot Mode)
-              </button>
+                >
+                  Blank Canvas (Screenshot Mode)
+                </button>
+              </div>
             </div>
+            <span className="text-xs text-slate-400 hidden sm:inline">
+              Duta Sofa Manado &bull; Management Dashboard
+            </span>
           </div>
-          <span className="text-xs text-slate-400 hidden sm:inline">
-            Duta Sofa Manado &bull; Management Dashboard
-          </span>
-        </div>
 
-        {/* 4. Main Overview Content Component */}
-        <OverviewContent
-          transactions={transactions}
-          searchQuery={searchQuery}
-          isEmptyCanvas={canvasViewMode === "blank"}
-        />
+          {/* 4. Main Overview Content */}
+          <div className="flex-1">
+            <OverviewContent
+              transactions={transactions}
+              searchQuery={searchQuery}
+              isEmptyCanvas={canvasViewMode === "blank"}
+            />
+          </div>
+        </main>
       </div>
 
       {/* 5. Add Transaction Modal Component */}

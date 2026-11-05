@@ -17,7 +17,7 @@ export default function Topbar({
   };
 
   return (
-    <header className="h-16 bg-[#139a6c] px-8 flex items-center justify-between text-white shadow-xs">
+    <header className="h-16 bg-[#139a6c] px-8 flex items-center justify-between text-white shadow-xs shrink-0 sticky top-0 z-20">
       {/* Breadcrumb Navigation */}
       <div className="flex items-center gap-2 text-sm">
         <span className="text-emerald-100/90 font-normal hover:text-white transition-colors cursor-pointer">
